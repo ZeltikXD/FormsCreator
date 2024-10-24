@@ -1,0 +1,32 @@
+﻿@using FormsCreator.Core.Enums
+<div class="sidebar-menu">
+    <ul class="menu">
+        <li class="sidebar-title">@WebResources.SimpleWordMenu</li>
+        <li class="sidebar-item">
+            <a asp-controller="Home" asp-action="Index" class='sidebar-link'>
+                <i class="bi bi-grid-fill"></i>
+                <span>@WebResources.MainNavBarHomeName</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a asp-controller="User" asp-action="Index" class='sidebar-link'>
+                <i class="bi bi-people-fill"></i>
+                <span>@WebResources.MainNavbarManageUsers</span>
+            </a>
+        </li>
+        <li class="sidebar-item has-sub">
+            <a href="javascript:void(0)" class='sidebar-link'>
+                <i class="bi bi-collection-fill"></i>
+                <span>@WebResources.MainNavbarLang</span>
+            </a>
+            <ul class="submenu">
+                <li class="submenu-item">
+                    <a asp-controller="Home" asp-action="ChangeLanguage" asp-route-lang="@SupportedLang.en_US" class="submenu-link">English</a>
+                </li>
+                <li class="submenu-item">
+                    <a asp-controller="Home" asp-action="ChangeLanguage" asp-route-lang="@SupportedLang.es_MX" class="submenu-link">Español</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

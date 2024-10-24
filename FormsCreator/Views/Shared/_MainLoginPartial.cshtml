@@ -1,0 +1,28 @@
+﻿@using FormsCreator.Core.Interfaces.Services
+
+@if (authService.IsSignedIn())
+{
+    <li class="nav-item dropdown">
+        <div class="ms-4">
+            <a href="javascript:void(0)" id="userDropdown" class="btn custom-btn custom-border-btn nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                @string.Format(WebResources.MainNavbarUsernameSalute, authService.GetUserName())
+            </a>
+            <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" asp-controller="Form" asp-action="MyForms">@WebResources.MainNavbarMyForms</a></li>
+                @if (authService.HasRole("Admin"))
+                {
+                <li><a class="dropdown-item" asp-controller="User" asp-action="Index">@WebResources.MainNavbarManageUsers</a></li>
+                }
+                <li><a class="dropdown-item" asp-controller="Auth" asp-action="LogOut">@WebResources.MainNavbarSignOut</a></li>
+            </ul>
+        </div>
+    </li>
+}
+else
+{
+    <li class="nav-item dropdown">
+        <div class="ms-4">
+            <a asp-controller="Auth" asp-action="LogIn" class="btn custom-btn custom-border-btn">@WebResources.MainNavbarLogin</a>
+        </div>
+    </li>
+}

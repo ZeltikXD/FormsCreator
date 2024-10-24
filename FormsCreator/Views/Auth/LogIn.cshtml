@@ -1,0 +1,86 @@
+﻿@using Microsoft.AspNetCore.Mvc.ModelBinding
+@model UserLoginRequestDto
+@{
+    ViewData["Title"] = WebResources.AuthLoginTitle;
+}
+
+<partial name="_MainCommonHeader" model="WebResources.AuthLoginTitle" />
+
+@section Styles {
+    <style>
+        .divider:after,
+        .divider:before {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #eee;
+        }
+    </style>
+}
+
+<section class="">
+    <div class="container py-5 h-100">
+        <div class="row d-flex align-items-center justify-content-center h-100">
+            <div class="col-md-8 col-lg-7 col-xl-6">
+                <img src="~/main/images/login-image.svg"
+                     class="img-fluid" alt="Phone image">
+            </div>
+            <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+                <form method="post" asp-action="LogIn" asp-route-returnUrl="@ViewBag.ReturnUrl">
+                    <!-- Email/Username input -->
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <label class="form-label" asp-for="UserOrEmail">@WebResources.AuthLoginEmailUser</label>
+                        <input type="text" asp-for="UserOrEmail" class="form-control form-control-lg" />
+                        <span asp-validation-for="UserOrEmail" class="text-danger" style="font-size: small"></span>
+                    </div>
+
+                    <!-- Password input -->
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <label class="form-label" asp-for="Password">@WebResources.AuthLoginPassword</label>
+                        <input type="password" asp-for="Password" class="form-control form-control-lg" />
+                        <span asp-validation-for="Password" class="text-danger" style="font-size: small"></span>
+                        @if (ModelState.Any(x => x.Key.Equals(string.Empty)))
+                        {
+                            <span class="text-danger field-validation-error" style="font-size: small">
+                                <ul>
+                                    @foreach (var state in ModelState[string.Empty]?.Errors ?? [])
+                                    {
+                                        <li>@state.ErrorMessage</li>
+                                    }
+                                </ul>
+                            </span>
+                            <br />
+                        }
+                    </div>
+
+                    <div class="d-flex justify-content-around align-items-center mb-4">
+                        @* <!-- Checkbox -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="form1Example3" checked />
+                            <label class="form-check-label" for="form1Example3"> Remember me </label>
+                        </div> *@
+                        <a asp-controller="Auth" asp-action="Register">@WebResources.AuthLoginDontHaveAcc</a>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary w-100 fs-4 mb-4">@WebResources.AuthLoginSignIn</button>
+
+                    <div class="divider d-flex align-items-center my-4">
+                        <p class="text-center fw-bold mx-3 mb-0 text-muted">@WebResources.GenericOR</p>
+                    </div>
+
+                    <a asp-action="LogInGoogle" asp-route-returnUrl="@ViewBag.ReturnUrl" class="btn btn-primary w-100 fs-4 mb-4" style="background-color: dodgerblue" role="button">
+                        <i class="bi bi-google"></i> @WebResources.AuthLoginGoogle
+                    </a>
+                    @* <a class="btn btn-primary w-100 fs-4 mb-4" style="background-color: black" href="#!" role="button">
+                        <i class="bi bi-twitter-x"></i>Continue with Twitter (X)
+                    </a> *@
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@functions{
+    ModelStateDictionary ModelState => ViewData.ModelState;
+}

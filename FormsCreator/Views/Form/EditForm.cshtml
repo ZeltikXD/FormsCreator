@@ -1,0 +1,153 @@
+﻿@using FormsCreator.Application.Utils
+@using FormsCreator.Core.Enums
+@model FormUpdateRequestDto
+@{
+    ViewData["Title"] = WebResources.FormEditFormTitle;
+}
+
+<partial name="_MainCommonHeader" model="WebResources.FormEditFormTitle">
+
+    <section class="d-flex flex-nowrap section-padding pb-100">
+        <div class="container mt-5">
+            <div class="col-lg-12 col-12">
+                <div class="section-title-wrap mb-5">
+                    <h4 class="section-title">@WebResources.FormAnswerTemplateTitle</h4>
+                </div>
+                <span class="text-danger" asp-validation-for="Answers"></span>
+            </div>
+            <form asp-action="UpdateForm" method="post" enctype="multipart/form-data">
+                <input type="hidden" readonly asp-for="Id" />
+                <input type="hidden" readonly asp-for="TemplateId" value="@Template.Id" />
+                <div id="questions-section">
+                    <ul id="questions-list" class="list-group">
+                        <!-- Questions will be dynamically added here -->
+                        @foreach (var question in Template.Questions)
+                        {
+                            <input type="hidden" asp-for="Answers[GetAnswerIndex(question.Id)].QuestionId" value="@question.Id" />
+                            <input type="hidden" asp-for="Answers[GetAnswerIndex(question.Id)].Id" readonly />
+                            if (question.Type == QuestionType.Text || question.Type == QuestionType.Number)
+                            {
+                                <li class="list-group-item" data-id="@question.Index">
+                                    <label class="form-label">@Template.Title</label><br />
+                                    <label class="form-label" style="font-size: medium">@Template.Description</label>
+                                    <input class="form-control" asp-for="Answers[GetAnswerIndex(question.Id)].Options[0].Value" type="@question.Type.ToString().ToLower()" />
+                                    <input type="hidden" asp-for="Answers[GetAnswerIndex(question.Id)].Options[0].Id" readonly />
+                                    <span class="text-danger field-validation-valid" style="font-size: small" asp-validation-for="Answers[GetAnswerIndex(question.Id)].Options[0].Value"></span>
+                                </li>
+                            }
+                            else if (question.Type == QuestionType.Multiple_Choice || question.Type == QuestionType.Checkbox || question.Type == QuestionType.Dropdown)
+                            {
+                                <li class="list-group-item" data-id="@question.Index">
+                                    <div class="mb-2">
+                                        <label class="form-label">@Template.Title</label><br />
+                                        <label class="form-label" style="font-size: medium">@Template.Description</label>
+                                        <div class="input-group mb-2">
+                                            @if (question.Type == QuestionType.Dropdown)
+                                            {
+                                                <input type="hidden" readonly asp-for="Answers[GetAnswerIndex(question.Id)].Options[0].Id" />
+                                                <select class="form-select" asp-for="Answers[GetAnswerIndex(question.Id)].Options[0].QuestionOptionId" asp-items="new SelectList(question.Options ?? [], nameof(QuestionOptionResponseDto.Id), nameof(QuestionOptionResponseDto.Value))"></select>
+                                            }
+                                            else if (question.Type == QuestionType.Checkbox)
+                                            {
+                                                int j = 0;
+                                                @foreach (var option in question.Options ?? [])
+                                                {
+                                                    <div class="form-check">
+                                                        <input type="hidden" readonly asp-for="Answers[GetAnswerIndex(question.Id)].Options[j].QuestionOptionId" />
+                                                        <input class="form-check-input" type="checkbox" asp-for="Answers[GetAnswerIndex(question.Id)].Options[j].Value" id="option-@option.Id" />
+                                                        <input type="hidden" asp-for="Answers[GetAnswerIndex(question.Id)].Options[j].Id" readonly />
+                                                        <label class="form-check-label" for="option-@option.Id">
+                                                            @option.Value
+                                                        </label>
+                                                    </div>
+                                                    j++;
+                                                }
+                                            }
+                                            else if (question.Type == QuestionType.Multiple_Choice)
+                                            {
+                                                @foreach (var option in question.Options ?? [])
+                                                {
+                                                    <div class="form-check">
+                                                        <input type="hidden" readonly asp-for="Answers[GetAnswerIndex(question.Id)].Options[0].Id" />
+                                                        <input class="form-check-input" type="radio" asp-for="Answers[GetAnswerIndex(question.Id)].Options[0].QuestionOptionId" value="@option.Id" id="option-@option.Id" />
+                                                        <label class="form-check-label" for="option-@option.Id">
+                                                            @option.Value
+                                                        </label>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                            else if (question.Type == QuestionType.Multiple_Choice_Grid || question.Type == QuestionType.Checkbox_Grid)
+                            {
+                                <li class="list-group-item" data-id="@question.Index">
+                                    <div class="mb-2">
+                                        <label class="form-label">@Template.Title</label><br />
+                                        <label class="form-label" style="font-size: medium">@Template.Description</label>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    @foreach (var opt in question.Options?.Where(x => !string.IsNullOrWhiteSpace(x.Column)) ?? [])
+                                                    {
+                                                        <th>
+                                                            <div class="input-group">
+                                                                <label class="form-label">@opt.Column</label>
+                                                            </div>
+                                                        </th>
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var opt in question.Options?.Where(x => !string.IsNullOrWhiteSpace(x.Row)) ?? [])
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <div class="input-group">
+                                                                <label type="text" class="form-label">@opt.Row</label>
+                                                            </div>
+                                                        </td>
+
+                                                        @foreach (var column in question.Options?.Where(x => !string.IsNullOrWhiteSpace(x.Column)) ?? [])
+                                                        {
+                                                            <td>
+                                                                <input type="hidden" readonly asp-for="Answers[GetAnswerIndex(question.Id)].Options[GetOptionIndex(question.Id, column.Column!, opt.Row!)].Id" />
+                                                                <input type="@ViewUtils.GetInputType(question.Type)" asp-for="Answers[GetAnswerIndex(question.Id)].Options[GetOptionIndex(question.Id, column.Column!, opt.Row!)].Value" />
+                                                                <input type="hidden" asp-for="Answers[GetAnswerIndex(question.Id)].Options[GetOptionIndex(question.Id, column.Column!, opt.Row!)].Column" readonly />
+                                                                <input type="hidden" asp-for="Answers[GetAnswerIndex(question.Id)].Options[GetOptionIndex(question.Id, column.Column!, opt.Row!)].Row" />
+                                                            </td>
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div><br />
+                <button class="btn btn-primary" type="submit">Enviar</button>
+            </form>
+        </div>
+    </section>
+
+@functions {
+    TemplateResponseDto Template => ViewBag.Template;
+
+    int GetAnswerIndex(Guid questionId)
+    {
+        var item = Model.Answers.FirstOrDefault(x => x.QuestionId == questionId);
+        if (item is null) return -1;
+        return Model.Answers.IndexOf(item);
+    }
+
+    int GetOptionIndex(Guid questionId, string column, string row)
+    {
+        var item = Model.Answers[GetAnswerIndex(questionId)].Options.FirstOrDefault(x => x.Column == column && x.Row == row);
+        if (item is null) return -1;
+        return Model.Answers[GetAnswerIndex(questionId)].Options.IndexOf(item);
+    }
+}

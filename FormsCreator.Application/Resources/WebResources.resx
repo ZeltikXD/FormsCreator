@@ -1,0 +1,471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="MainNavBarSearchText" xml:space="preserve">
+    <value>Type Something</value>
+  </data>
+  <data name="MainNavBarHomeName" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="HomeIndexMostPopular" xml:space="preserve">
+    <value>Most popular templates</value>
+  </data>
+  <data name="AuthLoginTitle" xml:space="preserve">
+    <value>Log In</value>
+  </data>
+  <data name="AuthLoginEmailUser" xml:space="preserve">
+    <value>Email or Username</value>
+  </data>
+  <data name="MainNavbarTemplatesText" xml:space="preserve">
+    <value>Templates</value>
+  </data>
+  <data name="MainNavbarTemplatesList" xml:space="preserve">
+    <value>Templates list</value>
+  </data>
+  <data name="MainNavbarMyTemplates" xml:space="preserve">
+    <value>My Templates</value>
+  </data>
+  <data name="MainNavbarCreateTemplate" xml:space="preserve">
+    <value>Create Template</value>
+  </data>
+  <data name="MainNavbarSignOut" xml:space="preserve">
+    <value>Sign Out</value>
+  </data>
+  <data name="MainNavbarMyForms" xml:space="preserve">
+    <value>My forms</value>
+  </data>
+  <data name="MainNavbarLogin" xml:space="preserve">
+    <value>Log In</value>
+  </data>
+  <data name="GenericOR" xml:space="preserve">
+    <value>OR</value>
+  </data>
+  <data name="AuthLoginGoogle" xml:space="preserve">
+    <value>Continue with Google</value>
+  </data>
+  <data name="AuthLoginDontHaveAcc" xml:space="preserve">
+    <value>Don't have an account? Sign up here</value>
+  </data>
+  <data name="AuthLoginPassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="MainNavbarLang" xml:space="preserve">
+    <value>Change language</value>
+  </data>
+  <data name="AuthLoginSignIn" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="HomeIndexMainTitle" xml:space="preserve">
+    <value>Create your own templates and share them.</value>
+  </data>
+  <data name="HomeIndexMainSubtitle" xml:space="preserve">
+    <value>Explore templates from various users and complete them.</value>
+  </data>
+  <data name="HomeIndexButtonStart" xml:space="preserve">
+    <value>Start now!</value>
+  </data>
+  <data name="HomeIndexNoTemplates" xml:space="preserve">
+    <value>There are no templates for now.</value>
+  </data>
+  <data name="HomeIndexTableTitle" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="HomeIndexTableCreator" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="HomeIndexTableTopic" xml:space="preserve">
+    <value>Topic</value>
+  </data>
+  <data name="HomeIndexTableTags" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="HomeIndexTableLikes" xml:space="preserve">
+    <value>Likes</value>
+  </data>
+  <data name="HomeIndexTableForms" xml:space="preserve">
+    <value>Forms</value>
+  </data>
+  <data name="HomeIndexCouldInterest" xml:space="preserve">
+    <value>You might be interested</value>
+  </data>
+  <data name="MainNavbarUsernameSalute" xml:space="preserve">
+    <value>Hi {0}!</value>
+  </data>
+  <data name="TemplateCreatorTitle" xml:space="preserve">
+    <value>Create template</value>
+  </data>
+  <data name="TemplateCreatorTools" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="TemplateCreatorAddTextQuestion" xml:space="preserve">
+    <value>Add Text Question</value>
+  </data>
+  <data name="TemplateCreatorAddNumberQuestion" xml:space="preserve">
+    <value>Add Number Question</value>
+  </data>
+  <data name="TemplateCreatorAddMultipleChoice" xml:space="preserve">
+    <value>Add Multiple Choice Question</value>
+  </data>
+  <data name="TemplateCreatorAddCheckboxQuestion" xml:space="preserve">
+    <value>Add Checkbox Question</value>
+  </data>
+  <data name="TemplateCreatorAddDropdownQuestion" xml:space="preserve">
+    <value>Add Dropdown Question</value>
+  </data>
+  <data name="TemplateCreatorAddMultipleChoiceGrid" xml:space="preserve">
+    <value>Add Multiple Choice Grid Question</value>
+  </data>
+  <data name="TemplateCreatorAddCheckboxGrid" xml:space="preserve">
+    <value>Add Checkbox Grid Question</value>
+  </data>
+  <data name="TemplateCreatorTemplateEditor" xml:space="preserve">
+    <value>Template editor</value>
+  </data>
+  <data name="SimpleWordDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="TemplateCreatorEnterTitle" xml:space="preserve">
+    <value>Enter title</value>
+  </data>
+  <data name="TemplateCreatorSave" xml:space="preserve">
+    <value>Save Template</value>
+  </data>
+  <data name="TemplateTextQuestion" xml:space="preserve">
+    <value>Text question</value>
+  </data>
+  <data name="TemplateNumberQuestion" xml:space="preserve">
+    <value>Number question</value>
+  </data>
+  <data name="TemplateEnterQuestion" xml:space="preserve">
+    <value>Enter your question</value>
+  </data>
+  <data name="TemplateMultipleChoiceQuestion" xml:space="preserve">
+    <value>Multiple choice question</value>
+  </data>
+  <data name="TemplateCheckboxQuestion" xml:space="preserve">
+    <value>Checkbox question</value>
+  </data>
+  <data name="TemplateDropdownQuestion" xml:space="preserve">
+    <value>Dropdown question</value>
+  </data>
+  <data name="TemplateMultipleChoiceGrid" xml:space="preserve">
+    <value>Multiple choice grid question</value>
+  </data>
+  <data name="TemplateCheckboxGridQuestion" xml:space="preserve">
+    <value>Checkbox grid question</value>
+  </data>
+  <data name="SimpleWordOption" xml:space="preserve">
+    <value>Option</value>
+  </data>
+  <data name="SimpleWordDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="TemplateAddOption" xml:space="preserve">
+    <value>Add option</value>
+  </data>
+  <data name="SimpleWordColumn" xml:space="preserve">
+    <value>Column</value>
+  </data>
+  <data name="SimpleWordRow" xml:space="preserve">
+    <value>Row</value>
+  </data>
+  <data name="TemplateAddRow" xml:space="preserve">
+    <value>Add row</value>
+  </data>
+  <data name="TemplateAddColumn" xml:space="preserve">
+    <value>Add column</value>
+  </data>
+  <data name="TemplateUploadImage" xml:space="preserve">
+    <value>Template Image (optional)</value>
+  </data>
+  <data name="TemplateIsPublic" xml:space="preserve">
+    <value>Is public?</value>
+  </data>
+  <data name="SimpleWordEdit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="GetByTopics" xml:space="preserve">
+    <value>Get by topics</value>
+  </data>
+  <data name="GetByTags" xml:space="preserve">
+    <value>Get by tags</value>
+  </data>
+  <data name="GetByTextSearch" xml:space="preserve">
+    <value>Get by text search</value>
+  </data>
+  <data name="ChooseAnything" xml:space="preserve">
+    <value>Choose anything</value>
+  </data>
+  <data name="TextSearch" xml:space="preserve">
+    <value>Text search</value>
+  </data>
+  <data name="SimpleWordAnswer" xml:space="preserve">
+    <value>Answer</value>
+  </data>
+  <data name="FormAnswerTemplateTitle" xml:space="preserve">
+    <value>Answer the form</value>
+  </data>
+  <data name="FormEditFormTitle" xml:space="preserve">
+    <value>Edit submitted form</value>
+  </data>
+  <data name="UserIndexWentWrong" xml:space="preserve">
+    <value>Oops! Something went wrong</value>
+  </data>
+  <data name="SimpleWordCode" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="SimpleWordUnderstood" xml:space="preserve">
+    <value>Understood</value>
+  </data>
+  <data name="SimpleWordName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="UserIndexRegistrationDate" xml:space="preserve">
+    <value>Registration date</value>
+  </data>
+  <data name="SimpleWordStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="SimpleWordBlocked" xml:space="preserve">
+    <value>Blocked</value>
+  </data>
+  <data name="SimpleWordActive" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="UserIndexGetAllText" xml:space="preserve">
+    <value>Do you want to get all records? (If not checked, blocking filter will be used.)</value>
+  </data>
+  <data name="UserIndexGetBlockedMessage" xml:space="preserve">
+    <value>Do you want to filter by blocked users? (Only used if the first filter is disabled)</value>
+  </data>
+  <data name="UserIndexTitle" xml:space="preserve">
+    <value>List of registered users</value>
+  </data>
+  <data name="MainNavbarManageUsers" xml:space="preserve">
+    <value>Manage users</value>
+  </data>
+  <data name="ApplyFiltersText" xml:space="preserve">
+    <value>Apply filters</value>
+  </data>
+  <data name="SimpleWordMenu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="SimpleWordRole" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="UserIndexRemoveAdmin" xml:space="preserve">
+    <value>Remove admin</value>
+  </data>
+  <data name="UserIndexGrantAdmin" xml:space="preserve">
+    <value>Grant admin</value>
+  </data>
+  <data name="AuthRegisterUserName" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="AuthRegisterEmail" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="AuthRegisterHaveAcc" xml:space="preserve">
+    <value>¿Do you already have an account? Sign In here</value>
+  </data>
+  <data name="AuthSignUp" xml:space="preserve">
+    <value>Sign Up</value>
+  </data>
+  <data name="SimpleWordComment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="PostComment" xml:space="preserve">
+    <value>Post comment</value>
+  </data>
+  <data name="SimpleWordSubmit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="ChangeThemeText" xml:space="preserve">
+    <value>Change theme</value>
+  </data>
+  <data name="SimpleWordClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="TemplateEditTemplate" xml:space="preserve">
+    <value>Edit template</value>
+  </data>
+  <data name="AddNewTagToUse" xml:space="preserve">
+    <value>Add a new tag to use it</value>
+  </data>
+  <data name="AddNewTag" xml:space="preserve">
+    <value>Add new tag</value>
+  </data>
+  <data name="ViewForms" xml:space="preserve">
+    <value>See forms</value>
+  </data>
+  <data name="IsPublic" xml:space="preserve">
+    <value>Is public?</value>
+  </data>
+  <data name="SimpleWordYes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="SimpleWordNo" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="TemplateCreateAddUsers" xml:space="preserve">
+    <value>Add the users you want to answer this template</value>
+  </data>
+  <data name="SimpleWordUsers" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="AddOrRemovePermissionToTemplate" xml:space="preserve">
+    <value>Add or remove user permission to the template</value>
+  </data>
+  <data name="AddPermission" xml:space="preserve">
+    <value>Add permission</value>
+  </data>
+  <data name="RemovePermission" xml:space="preserve">
+    <value>Remove permission</value>
+  </data>
+  <data name="ManageAccess" xml:space="preserve">
+    <value>Manage acess</value>
+  </data>
+  <data name="ChangesMade" xml:space="preserve">
+    <value>Changes made</value>
+  </data>
+  <data name="FailedChanges" xml:space="preserve">
+    <value>Failed changes</value>
+  </data>
+  <data name="SimpleWordMessage" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="ChangesSuccessfully" xml:space="preserve">
+    <value>The changes were made successfully.</value>
+  </data>
+  <data name="NoFormsText" xml:space="preserve">
+    <value>There are not forms at this moment.</value>
+  </data>
+  <data name="FormsByTemplateTitle" xml:space="preserve">
+    <value>Forms by template</value>
+  </data>
+  <data name="FormsByTemplateAnswered" xml:space="preserve">
+    <value>Answered</value>
+  </data>
+  <data name="SeeFormText" xml:space="preserve">
+    <value>See form</value>
+  </data>
+  <data name="ReviewFormText" xml:space="preserve">
+    <value>Review form</value>
+  </data>
+</root>

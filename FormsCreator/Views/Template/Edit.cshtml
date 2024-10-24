@@ -1,0 +1,303 @@
+﻿@using FormsCreator.Application.Utils
+@using FormsCreator.Core.Enums
+@using Microsoft.AspNetCore.Html
+@using BuilderQuestionModel = Views_Template__BuilderQuestionsCommonPartial.BuilderQuestionModel;
+@model TemplateUpdateRequestDto<IFormFile>
+@{
+    ViewData["Title"] = WebResources.TemplateEditTemplate;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/main/css/select2.min.css" />
+    <link rel="stylesheet" href="~/main/css/select2-bootstrap-5-theme.min.css" asp-append-version="true" />
+}
+
+<partial name="_MainCommonHeader" model="WebResources.TemplateCreatorTitle" />
+<section class="d-flex flex-nowrap section-padding pb-100">
+    <div class="d-flex flex-column flex-shrink-0 p-3 toolbar-id" style="width: 280px">
+        <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+            <span class="fs-4" style="color: #FF4500">@WebResources.TemplateCreatorTools</span>
+        </a>
+        <hr>
+        <!-- Add question buttons -->
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <button type="button" class="nav-link" onclick="tmplManager.addQuestion(@((short)QuestionType.Text))">
+                    @WebResources.TemplateCreatorAddTextQuestion
+                </button>
+            </li>
+            <li>
+                <button type="button" class="nav-link" onclick="tmplManager.addQuestion(@((short)QuestionType.Number))">
+                    @WebResources.TemplateCreatorAddNumberQuestion
+                </button>
+            </li>
+            <li>
+                <button type="button" class="nav-link" onclick="tmplManager.addQuestion(@((short)QuestionType.Multiple_Choice))">
+                    @WebResources.TemplateCreatorAddMultipleChoice
+                </button>
+            </li>
+            <li>
+                <button type="button" class="nav-link" onclick="tmplManager.addQuestion(@((short)QuestionType.Checkbox))">
+                    @WebResources.TemplateCreatorAddCheckboxQuestion
+                </button>
+            </li>
+            <li>
+                <button type="button" class="nav-link" onclick="tmplManager.addQuestion(@((short)QuestionType.Dropdown))">
+                    @WebResources.TemplateCreatorAddDropdownQuestion
+                </button>
+            </li>
+            <li>
+                <button type="button" class="nav-link" onclick="tmplManager.addQuestion(@((short)QuestionType.Multiple_Choice_Grid))">
+                    @WebResources.TemplateCreatorAddMultipleChoiceGrid
+                </button>
+            </li>
+            <li>
+                <button type="button" class="nav-link" onclick="tmplManager.addQuestion(@((short)QuestionType.Checkbox_Grid))">
+                    @WebResources.TemplateCreatorAddCheckboxGrid
+                </button>
+                <br />
+            </li>
+            <li>
+                <input type="text" class="form-control" id="new-tag" placeholder="@WebResources.AddNewTagToUse" />
+                <button type="button" id="tag-submit" class="btn btn-secondary mt-3">@WebResources.AddNewTag</button>
+            </li>
+            <li>
+                <button type="button" onclick="document.forms.namedItem('template-builder').submit()" class="btn btn-primary mt-3">@WebResources.TemplateCreatorSave</button>
+            </li>
+        </ul>
+        <hr>
+    </div>
+    <div class="container mt-5" id="main-template">
+        <div class="col-lg-12 col-12">
+            <div class="section-title-wrap mb-5">
+                <h4 class="section-title">@WebResources.TemplateCreatorTemplateEditor</h4>
+            </div>
+        </div>
+        <form name="template-builder" asp-action="Update" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" readonly />
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label">@WebResources.HomeIndexTableTitle</label>
+                <input type="text" class="form-control" asp-for="Title" placeholder="@WebResources.TemplateCreatorEnterTitle" data-val="false" />
+                <span class="text-danger" style="font-size: small" asp-validation-for="Title"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">@WebResources.SimpleWordDescription</label>
+                <textarea class="form-control" asp-for="Description" rows="4" data-val="false"></textarea>
+                <span class="text-danger" style="font-size: small" asp-validation-for="Description"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Image" class="form-label">@WebResources.TemplateUploadImage</label>
+                <input type="file" accept="image/*" class="form-control" asp-for="Image" />
+                <span class="text-danger" style="font-size: small" asp-validation-for="Image"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="DeleteCurrentImage" class="form-label">¿Eliminar la imagen actual?</label>
+                <input type="checkbox" class="form-check-input" asp-for="DeleteCurrentImage" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="IsPublic" class="form-label">@WebResources.TemplateIsPublic</label>
+                <input type="checkbox" class="form-check-input" asp-for="IsPublic" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="TopicId" class="form-label">@WebResources.HomeIndexTableTopic</label>
+                <select class="form-control" asp-for="TopicId" asp-items="ViewBag.Topics"></select>
+                <span class="text-danger" style="font-size: small" asp-validation-for="TopicId"></span>
+            </div>
+            <div class="mb-3">
+                <label for="tags" class="form-label">Tags</label>
+                <select class="form-control endure-text-black" data-placeholder="@WebResources.ChooseAnything" multiple id="tags" asp-items="ViewBag.Tags" data-val="false"></select>
+                <span class="text-danger" style="font-size: small" asp-validation-for="Tags"></span>
+                <div style="display: none" id="tags-container">
+                    @{  int i = 0; }
+                    @foreach (var tag in Model.Tags ?? [])
+                    {
+                        <input type="hidden" value="@tag.Id" name="Tags[@i].Id" id="Tags[@i].Id" />
+                        i++;
+                    }
+                </div>
+            </div>
+            <!-- Section to add questions -->
+            <div id="questions-section">
+                <ul id="questions-list" class="list-group">
+                    <!-- Questions will be dynamically added here -->
+                    @{ i = 0; }
+                    @foreach (var question in Model.Questions ?? [])
+                    {
+                        if (question.Type == QuestionType.Text || question.Type == QuestionType.Number)
+                        {
+                            <li class="list-group-item" data-id="@question.Index">
+                                <div class="mb-2">
+                                    <input type="hidden" asp-for="Questions[i].Id" readonly />
+                                    <partial name="_BuilderQuestionsCommonPartial"
+                                             model="GetCommonQuestionModel(i, question.Index, question.Type)" />
+                                </div>
+                                @Html.GetQuestionFooter(question.Index)
+                            </li>
+                        }
+                        else if (question.Type == QuestionType.Multiple_Choice || question.Type == QuestionType.Checkbox || question.Type == QuestionType.Dropdown)
+                        {
+                            <li class="list-group-item" data-id="@question.Index">
+                                <div class="mb-2">
+                                    <input type="hidden" asp-for="Questions[i].Id" readonly />
+                                    <partial name="_BuilderQuestionsCommonPartial"
+                                             model="GetCommonQuestionModel(i, question.Index, question.Type)" />
+                                    <div class="@ViewUtils.GetClassFromType(question.Type)">
+                                        @{
+                                            int j = 0;
+                                        }
+                                        @foreach (var option in question.Options ?? [])
+                                        {
+                                            <div class="input-group mb-2">
+                                                <input type="hidden" asp-for="Questions[i].Options[j].Id" readonly />
+                                                <input type="text" asp-for="Questions[i].Options[j].Value" class="form-control" value="@option.Value" />
+                                                <span class="text-danger field-validation-valid" style="font-size: small" asp-validation-for="Questions[i].Options[j].Value"></span>
+                                                <button type="button" class="btn btn-sm btn-danger" onclick="tmplManager.deleteOption(this, '@question.Index')">@WebResources.SimpleWordDelete</button>
+                                            </div>
+                                            j++;
+                                        }
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-link" onclick="tmplManager.addOption('@question.Index', '@((short)question.Type)')">@WebResources.TemplateAddOption</button>
+                                </div>
+                                @Html.GetQuestionFooter(question.Index)
+                            </li>
+                        }
+                        else if (question.Type == QuestionType.Multiple_Choice_Grid || question.Type == QuestionType.Checkbox_Grid)
+                        {
+                            <li class="list-group-item" data-id="@question.Index">
+                                <div class="mb-2">
+                                    <input type="hidden" asp-for="Questions[i].Id" readonly />
+                                    <partial name="_BuilderQuestionsCommonPartial"
+                                             model="GetCommonQuestionModel(i, question.Index, question.Type)" />
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                @{
+                                                    int j = 0;
+                                                }
+                                                @foreach (var opt in question.Options ?? [])
+                                                {
+                                                    <input type="hidden" asp-for="Questions[i].Options[j].Id" />
+                                                    if (string.IsNullOrWhiteSpace(opt.Column)) { j++; continue; }
+                                                    <th>
+                                                        <div class="input-group">
+                                                            <input type="text" asp-for="Questions[i].Options[j].Column" class="column-field form-control" value="@opt.Column" />
+                                                            <span class="text-danger field-validation-valid" style="font-size: small" asp-validation-for="Questions[i].Options[j].Column"></span>
+                                                            <button type="button" class="btn btn-sm btn-danger" onclick="tmplManager.deleteGridColumn('@question.Index', @(j+1))">@WebResources.SimpleWordDelete</button>
+                                                        </div>
+                                                    </th>
+                                                    j++;
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                j = 0; int columns = question.Options?.Count(x => !string.IsNullOrWhiteSpace(x.Column)) ?? 0;
+                                            }
+                                            @foreach (var opt in question.Options ?? [])
+                                            {
+                                                if (string.IsNullOrWhiteSpace(opt.Row)) { j++; continue; }
+                                                <tr>
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <input type="text" asp-for="Questions[i].Options[j].Row" class="row-field form-control" value="@opt.Row" />
+                                                            <span class="text-danger field-validation-valid" style="font-size: small" asp-validation-for="Questions[i].Options[j].Row"></span>
+                                                            <button type="button" class="btn btn-sm btn-danger" onclick="tmplManager.deleteGridRow('@question.Index', @(j+1))">@WebResources.SimpleWordDelete</button>
+                                                        </div>
+                                                    </td>
+                                                    @for (var k = 0; k < columns; k++)
+                                                    {
+                                                        <td><input type="@ViewUtils.GetInputType(question.Type)" name="grid-@question.Index-row@(j+1)" /></td>
+                                                    }
+                                                </tr>
+                                                j++;
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <button type="button" class="btn btn-sm btn-link" onclick="tmplManager.addGridRow('@question.Index', '@ViewUtils.GetInputType(question.Type)')">@WebResources.TemplateAddRow</button>
+                                    <button type="button" class="btn btn-sm btn-link" onclick="tmplManager.addGridColumn('@question.Index', '@ViewUtils.GetInputType(question.Type)')">@WebResources.TemplateAddColumn</button>
+                                </div>
+                                @Html.GetQuestionFooter(question.Index)
+                            </li>
+                        }
+                        i++;
+                    }
+                </ul>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <!-- Sortable.js -->
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/main/js/sortable.min.js"></script>
+    <script src="~/main/js/form-creator-manager.js" asp-append-version="true"></script>
+    <script src="~/main/js/sticky-toolbar.js" asp-append-version="true"></script>
+    <script src="~/main/js/form-multiselector-helper.js" asp-append-version="true"></script>
+    <script src="~/main/js/select2.full.min.js"></script>
+    <script type="text/javascript">
+        const opts = {
+            TextQuestion: '@WebResources.TemplateTextQuestion',
+            DescriptionText: '@WebResources.SimpleWordDescription',
+            NumberQuestion: '@WebResources.TemplateNumberQuestion',
+            EnterQuestionText: '@WebResources.TemplateEnterQuestion',
+            MultipleChoiceQuestion: '@WebResources.TemplateMultipleChoiceQuestion',
+            CheckboxQuestion: '@WebResources.TemplateCheckboxQuestion',
+            DropdownQuestion: '@WebResources.TemplateDropdownQuestion',
+            MultipleChoiceGrid: '@WebResources.TemplateMultipleChoiceGrid',
+            CheckboxGridQuestion: '@WebResources.TemplateCheckboxGridQuestion',
+            OptionText: '@WebResources.SimpleWordOption',
+            DeleteText: '@WebResources.SimpleWordDelete',
+            AddOptionText: '@WebResources.TemplateAddOption',
+            ColumnText: '@WebResources.SimpleWordColumn',
+            RowText: '@WebResources.SimpleWordRow',
+            AddRowText: '@WebResources.TemplateAddRow',
+            AddColumnText: '@WebResources.TemplateAddColumn'
+        };
+        const questionNumber = @(Model.Questions?.Count ?? 0);
+        const tmplManager = new TemplateManager('tmplManager', opts, questionNumber);
+
+        document.getElementById('tag-submit').addEventListener('click', (ev) => {
+            ev.target.disabled = true;
+            addNewTag();
+            async function addNewTag() {
+                const form = new FormData();
+                const text = document.getElementById('new-tag').value;
+                if (isNullOrWhiteSpace(text)) {
+                    ev.target.disabled = false;
+                    return;
+                }
+                form.append('Name', text);
+                const response = await fetch('@Url.Action("Post", "Tag")', { method: 'POST', body: form });
+                if (response.redirected) {
+                    location.href = response.url;
+                    return;
+                } else if (response.ok) {
+                    const { newId } = await response.json();
+                    const newTag = new Option(text, newId, false, false);
+                    // Append it to the select
+                    $("#tags").append(newTag).trigger('change');
+                    ev.target.disabled = false;
+                }
+            }
+        });
+
+        $('#tags').select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+            closeOnSelect: false,
+        });
+
+        $('#tags').on('change', () => {
+            adjustMultipleSelector('tags', 'tags-container', 'Tags');
+        });
+    </script>
+}
+
+@functions {
+
+    BuilderQuestionModel GetCommonQuestionModel(int index, int questionIndex, QuestionType type)
+        => new() { IteratorIndex = index, QuestionIndex = questionIndex, QuestionText = ViewUtils.GetTextFromType(type), Type = type, Questions = Model.Questions! };
+}

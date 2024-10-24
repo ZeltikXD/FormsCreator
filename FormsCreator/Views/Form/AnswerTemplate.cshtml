@@ -1,0 +1,251 @@
+﻿@using FormsCreator.Application.Utils
+@using FormsCreator.Core.Enums
+@model FormAddRequestDto
+@{
+    ViewData["Title"] = WebResources.FormAnswerTemplateTitle;
+}
+
+<partial name="_MainCommonHeader" model="WebResources.FormAnswerTemplateTitle" />
+
+<section class="d-flex flex-nowrap section-padding pb-100">
+    <div class="container mt-5">
+        <div class="col-lg-12 col-12">
+            <div class="section-title-wrap mb-5">
+                <h4 class="section-title">@WebResources.FormAnswerTemplateTitle</h4>
+            </div>
+            <span class="text-danger" asp-validation-for="Answers"></span>
+        </div>
+        <form asp-action="CreateForm" method="post" enctype="multipart/form-data">
+            <input type="hidden" readonly asp-for="TemplateId" value="@Template.Id" />
+            <input type="hidden" readonly asp-for="TotalQuestions" value="@Template.Questions.LongCount()" />
+            <div id="questions-section">
+                <ul id="questions-list" class="list-group">
+                    <!-- Questions will be dynamically added here -->
+                    @{ int i = 0; }
+                    @foreach (var question in Template.Questions)
+                    {
+                        <input type="hidden" asp-for="Answers[i].QuestionId" value="@question.Id" />
+                        if (question.Type == QuestionType.Text || question.Type == QuestionType.Number)
+                        {
+                            <li class="list-group-item" data-id="@question.Index">
+                                <label class="form-label">@question.Text</label><br />
+                                <label class="form-label" style="font-size: medium">@question.Description</label>
+                                <input class="form-control" asp-for="Answers[i].Options[0].Value" type="@question.Type.ToString().ToLower()" />
+                                <span class="text-danger field-validation-valid" style="font-size: small" asp-validation-for="Answers[i].Options[0].Value"></span>
+                            </li>
+                        }
+                        else if (question.Type == QuestionType.Multiple_Choice || question.Type == QuestionType.Checkbox || question.Type == QuestionType.Dropdown)
+                        {
+                            <li class="list-group-item" data-id="@question.Index">
+                                <div class="mb-2">
+                                    <label class="form-label">@question.Text</label><br />
+                                    <label class="form-label" style="font-size: medium">@question.Description</label>
+                                    <div class="input-group mb-2">
+                                        @if (question.Type == QuestionType.Dropdown)
+                                        {
+                                            <select class="form-select" asp-for="Answers[i].Options[0].QuestionOptionId" asp-items="new SelectList(question.Options ?? [], nameof(QuestionOptionResponseDto.Id), nameof(QuestionOptionResponseDto.Value))"></select>
+                                        }
+                                        else if (question.Type == QuestionType.Checkbox)
+                                        {
+                                            int j = 0;
+                                            @foreach (var option in question.Options ?? [])
+                                            {
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" asp-for="Answers[i].Options[j].Value" id="option-@option.Id" />
+                                                    <input type="hidden" asp-for="Answers[i].Options[j].QuestionOptionId" value="@option.Id" />
+                                                    <label class="form-check-label" for="option-@option.Id">
+                                                        @option.Value
+                                                    </label>
+                                                </div><hr style="color: transparent!important" />
+                                                j++;
+                                            }
+                                        }
+                                        else if (question.Type == QuestionType.Multiple_Choice)
+                                        {
+                                            @foreach (var option in question.Options?.OrderBy(x => x.Value).ToArray() ?? [])
+                                            {
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" asp-for="Answers[0].Options[0].QuestionOptionId" value="@option.Id" id="option-@option.Id" />
+                                                    <label class="form-check-label" for="option-@option.Id">
+                                                        @option.Value
+                                                    </label>
+                                                </div><hr style="color: transparent!important" />
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        else if (question.Type == QuestionType.Multiple_Choice_Grid || question.Type == QuestionType.Checkbox_Grid)
+                        {
+                            <li class="list-group-item" data-id="@question.Index">
+                                <div class="mb-2">
+                                    <label class="form-label">@question.Text</label><br />
+                                    <label class="form-label" style="font-size: medium">@question.Description</label>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                @foreach (var opt in question.Options?.Where(x => !string.IsNullOrWhiteSpace(x.Column)) ?? [])
+                                                {
+                                                    <th>
+                                                        <div class="input-group">
+                                                            <label class="form-label">@opt.Column</label>
+                                                        </div>
+                                                    </th>
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{ int k = 0; }
+                                            @foreach (var opt in question.Options?.Where(x => !string.IsNullOrWhiteSpace(x.Row)) ?? [])
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <label type="text" class="form-label">@opt.Row</label>
+                                                        </div>
+                                                    </td>
+                                                    
+                                                    @foreach (var column in question.Options?.Where(x => !string.IsNullOrWhiteSpace(x.Column)) ?? [])
+                                                    {
+                                                        <td>
+                                                            <input type="@ViewUtils.GetInputType(question.Type)" asp-for="Answers[i].Options[k].Value" />
+                                                            <input type="hidden" asp-for="Answers[i].Options[k].Column" value="@column.Column" readonly />
+                                                            <input type="hidden" asp-for="Answers[i].Options[k].Row" value="@opt.Row" />
+                                                        </td>
+                                                        k++;
+                                                    }
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </li>
+                        }
+                        i++;
+                    }
+                </ul>
+            </div><br />
+            <button class="btn btn-primary" type="submit">@WebResources.SimpleWordSubmit</button>
+        </form>
+    </div>
+</section>
+
+<section class="trending-podcast-section section-padding pt-0">
+    <div class="container my-5 py-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12 col-lg-10 col-xl-8">
+                <div class="card">
+                    <div id="comments_list">
+                        <!-- Comments will be added by the scripts. -->
+                    </div>
+                    <div id="pagination-container" style="display: flex; align-items: center !important; justify-content: center !important"></div>
+                    <div class="card-footer py-3 border-0">
+                        <div class="d-flex flex-start w-100">
+                            <div data-mdb-input-init class="form-outline w-100">
+                                <label class="form-label" for="comment-text">@WebResources.SimpleWordComment</label>
+                                <textarea class="form-control" id="comment-text" rows="4" required></textarea>
+                            </div>
+                        </div>
+                        <div class="float-end mt-2 pt-1">
+                            <button id="comment-button" type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-sm">@WebResources.PostComment</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<template id="comment_template">
+    <div class="card-body">
+        <div class="d-flex flex-start align-items-center">
+            <div>
+                <h6 class="fw-bold text-primary mb-1">{userName}</h6>
+                <p class="text-muted small mb-0">
+                    {timeStamp}
+                </p>
+            </div>
+        </div>
+
+        <p class="mt-3 mb-4 pb-2">
+            {text}
+        </p>
+    </div>
+    <hr class="my-0" />
+</template>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/main/js/pagination.js"></script>
+    <script src="~/main/js/comments-handler.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            const commentsManager = new HandleComments('@Url.Action("GetComments", "Comment", new { templateId = Template.Id })', 'comment_template', '@CultureInfo.CurrentCulture.Name');
+            const consultTotalComments = async () => {
+                const response = await fetch('@Url.Action("GetCount", "Comment", new { templateId = Template.Id })', { method: 'GET' });
+                const result = await response.json();
+                return result.count;
+            };
+            const main = async () => {
+                const totalCount = await consultTotalComments();
+                commentsManager.paginate('comments_list', 'pagination-container', totalCount, 5);
+            };
+
+            main();
+
+            const getXSRF_Token = () => {
+                return document.querySelector('input[name="__RequestVerificationToken"]').value;
+            };
+
+            const commentButton = document.getElementById('comment-button');
+            commentButton.addEventListener('click', () => {
+                commentButton.disabled = true;
+                const text = document.getElementById('comment-text').value;
+                if (isNullOrWhiteSpace(text)) {
+                    commentButton.disabled = false;
+                    return;
+                }
+                const request = async () => {
+                    const body = new FormData();
+                    body.append('TemplateId', '@Template.Id');
+                    body.append('Content', text);
+                    body.append('__RequestVerificationToken', getXSRF_Token());
+                    const response = await fetch('@Url.Action("Post", "Comment")', { method: 'POST', body: body });
+                    if (response.redirected) {
+                        window.location = response.url;
+                    }
+                    console.log(response.status);
+                    commentButton.disabled = false;
+                };
+
+                request();
+            });
+
+            const event = new EventSource('@Url.Action("StartEvent", "Sse", new { templateId = Template.Id })');
+            event.onmessage = (ev) => {
+                const data = JSON.parse(ev.data);
+                if (data.IsNew) {
+                    if (commentsManager.CurrentPage === 1) {
+                        consultTotalComments().then(count => {
+                            commentsManager.paginateWithPage('comments_list', 'pagination-container', count, 5, Math.ceil(count/5));
+                        });
+                    }
+                }
+            };;
+
+            event.onerror = (ev) => {
+                console.error(ev);
+            };
+
+            window.addEventListener('beforeunload', () => {
+                event.close();
+            });
+        });
+    </script>
+}
+
+@functions {
+    TemplateResponseDto Template => ViewBag.Template;
+}

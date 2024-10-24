@@ -1,0 +1,26 @@
+﻿@using FormsCreator.Core.Enums
+@model Views_Template__BuilderQuestionsCommonPartial.BuilderQuestionModel
+
+<label class="form-label">@Model.QuestionText</label>
+<input type="text" asp-for="Questions[Model.IteratorIndex].Text" class="form-control" placeholder="@WebResources.TemplateEnterQuestion" />
+<span class="text-danger field-validation-valid" style="font-size: small" asp-validation-for="Questions[Model.IteratorIndex].Text"></span><br/>
+<label class="form-label">@WebResources.SimpleWordDescription</label>
+<textarea class="form-control" asp-for="Questions[Model.IteratorIndex].Description" rows="4"></textarea>
+<span class="text-danger field-validation-valid" style="font-size: small" asp-validation-for="Questions[Model.IteratorIndex].Description"></span>
+<input type="hidden" asp-for="Questions[Model.IteratorIndex].Index" class="question-index" value="@Model.QuestionIndex" />
+<input type="hidden" asp-for="Questions[Model.IteratorIndex].Type" value="@Model.Type" /><br/>
+
+@functions {
+    public class BuilderQuestionModel
+    {
+        public IList<QuestionRequestDto> Questions { get; set; } = null!;
+
+        public int IteratorIndex { get; set; }
+
+        public int QuestionIndex { get; set; }
+
+        public QuestionType Type { get; set; }
+
+        public string QuestionText { get; set; } = string.Empty;
+    }
+}

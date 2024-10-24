@@ -1,0 +1,190 @@
+﻿@using Microsoft.AspNetCore.Html
+@model HomeIndexRecord
+@{
+    ViewData["Title"] = WebResources.MainNavBarHomeName;
+}
+@section Styles {
+    <style>
+        .tag1 {
+            font-size: 0.8em
+        }
+
+        .tag2 {
+            font-size: 0.9em
+        }
+
+        .tag3 {
+            font-size: 1em
+        }
+
+        .tag4 {
+            font-size: 1.2em
+        }
+
+        .tag5 {
+            font-size: 1.4em
+        }
+
+        .tag6 {
+            font-size: 1.7em
+        }
+
+        .tag7 {
+            font-size: 2.0em
+        }
+    </style>
+}
+
+<section class="hero-section">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-12 col-12">
+                <div class="text-center mb-5 pb-2">
+                    <h1 class="text-white">@WebResources.HomeIndexMainTitle</h1>
+
+                    <p class="text-white">@WebResources.HomeIndexMainSubtitle</p>
+
+                    <a href="#section_2" class="btn custom-btn smoothscroll mt-3">@WebResources.HomeIndexButtonStart</a>
+                </div>
+
+                <div class="owl-carousel owl-theme">
+                    @if (!Model.MostRecent.Any())
+                    {
+                        <div class="owl-carousel-info-wrap item">
+                            @WebResources.HomeIndexNoTemplates
+                        </div>
+                    }
+                    @foreach (var item in Model.MostRecent) {
+                    <div class="owl-carousel-info-wrap item">
+                        <img src="@item.Image_Url" class="owl-carousel-image img-fluid" alt="@item.Title">
+
+                        <div class="owl-carousel-info">
+                            <h4 class="mb-2">
+                                @item.Title
+                                @* <img src="~/main/images/verified.png" class="owl-carousel-verified-image img-fluid" alt=""> *@
+                            </h4>
+
+                            <span class="badge">@item.Creator.UserName</span>
+
+                            <span class="badge">@GetTagsUrl(item.Tags)</span>
+
+                            <span class="badge">@item.Topic.Name</span>
+                        </div>
+                    </div>
+                }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="latest-podcast-section section-padding pb-100" id="section_2">
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <div class="col-lg-12 col-12">
+                <div class="section-title-wrap mb-5">
+                    <h4 class="section-title">@WebResources.HomeIndexMostPopular</h4>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>@WebResources.HomeIndexTableTitle</th>
+                            <th>@WebResources.HomeIndexTableCreator</th>
+                            <th>@WebResources.HomeIndexTableTopic</th>
+                            <th>@WebResources.HomeIndexTableTags</th>
+                            <th>@WebResources.HomeIndexTableLikes</th>
+                            <th>@WebResources.HomeIndexTableForms</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.MostPopular)
+                        {
+                            <tr>
+                                <td>@item.Title</td>
+                                <td>@item.Creator.UserName</td>
+                                <td>@item.Topic.Name</td>
+                                <td>@GetTagsUrl(item.Tags)</td>
+                                <td>@item.LikesCount</td>
+                                <td>@item.FormsCount</td>
+                            </tr>
+                        }
+                        @if (!Model.MostPopular.Any())
+                        {
+                            <tr><th scope="col" colspan="6" style="text-align: center">@WebResources.HomeIndexNoTemplates</th></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+@if (Model.Tags.Any()) {
+<section class="trending-podcast-section section-padding">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-12 col-12">
+                <div class="section-title-wrap mb-5">
+                    <h4 class="section-title">@WebResources.HomeIndexCouldInterest</h4>
+                </div>
+            </div>
+
+            <div class="" style="text-align: justify !important">
+                @CreateTagsCloud()
+            </div>
+        </div>
+    </div>
+</section>
+}
+@functions {
+    IHtmlContent GetTagsUrl(IEnumerable<TagDto> tags)
+    {
+        List<string> strings = new();
+        foreach (var tag in tags)
+        {
+            strings.Add(string.Format("<a href=\"#\">{0}</a>", tag.Name));
+        }
+        System.Text.StringBuilder stringBuilder = new();
+        stringBuilder.AppendJoin(' ', strings);
+        return Html.Raw(stringBuilder.ToString());
+    }
+
+    IHtmlContent CreateTagsCloud()
+    {
+        List<string> strings = new();
+        foreach (var tag in Model.Tags)
+        {
+            strings.Add(string.Format("<a href=\"{2}\" class=\"{1}\">{0}</a>", tag.Name, GetTagClass(Random.Shared.Next(int.MaxValue), Random.Shared.Next(int.MaxValue)),
+            Url.Action("Templates", "Template", new { tags = tag.Name })));
+        }
+        System.Text.StringBuilder stringBuilder = new();
+        stringBuilder.AppendJoin(' ', strings);
+        return Html.Raw(stringBuilder.ToString());
+    }
+
+    static string GetTagClass(int category, int articles)
+    {
+        var result = (category * 100) / (articles * 100);
+        if (result <= 1)
+            return "tag1";
+        if (result <= 4)
+            return "tag2";
+        if (result <= 8)
+            return "tag3";
+        if (result <= 12)
+            return "tag4";
+        if (result <= 18)
+            return "tag5";
+        if (result <= 30)
+            return "tag6";
+        return result <= 50 ? "tag7" : "";
+    }
+}

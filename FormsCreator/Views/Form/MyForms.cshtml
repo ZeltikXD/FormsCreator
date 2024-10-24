@@ -1,0 +1,65 @@
+﻿@model ShowPaging<FormResponseDto>
+@using FormsCreator.Application.Utils
+@{
+    ViewData["Title"] = WebResources.MainNavbarMyForms;
+}
+
+<partial name="_MainCommonHeader" model="WebResources.MainNavbarMyForms" />
+
+<section class="latest-podcast-section section-padding pt-0" id="section_2">
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <div class="col-lg-12 col-12">
+                <div class="section-title-wrap mb-5">
+                    <h4 class="section-title">@WebResources.MainNavbarMyForms</h4>
+                </div>
+            </div>
+            @{ int i = 0; }
+            @foreach (var item in Model.DisplayResult)
+            {
+                if (i % 2 == 0) { <hr style="color: transparent" /> }
+                <div class="col-lg-6 col-12 mb-4 mb-lg-0">
+                    <div class="custom-block d-flex">
+                        <div class="">
+                            <div class="custom-block-icon-wrap">
+                                <div class="section-overlay"></div>
+                                <a href="detail-page.html" class="custom-block-image-wrap">
+                                    <img src="@item.Template.Image_Url" class="custom-block-image img-fluid" alt="@item.Template.Title">
+                                </a>
+                            </div>
+                            <div class="mt-2">
+                                <a asp-action="EditForm" asp-route-formId="@item.Id" class="btn custom-btn">
+                                    @WebResources.SimpleWordEdit
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="custom-block-info">
+
+                            <h5 class="mb-2">
+                                <a href="detail-page.html">
+                                    @item.Template.Title
+                                </a>
+                            </h5>
+
+                            <p class="mb-0">@item.Template.Description</p>
+
+                        </div>
+                    </div>
+                </div>
+                i++;
+            }
+            @if (!Model.DisplayResult.Any())
+            {
+                <div class="col-lg-6 col-12 mb-4 mb-lg-0">@WebResources.NoFormsText</div>
+            }
+            @if (Model.PageInfo.TotalItems > Model.PageInfo.ItemsPerPage)
+            {
+                <div class="col-lg-4 col-12 mx-auto">
+                    @Html.PageLinks(Model.PageInfo, (page) => Url.Action("MyForms", new { page, size = Model.PageInfo.ItemsPerPage }))
+                </div>
+            }
+        </div>
+    </div>
+</section>

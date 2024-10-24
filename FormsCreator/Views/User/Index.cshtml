@@ -1,0 +1,224 @@
+﻿@using FormsCreator.Core.Shared
+@model IEnumerable<UserPublicResponseDto>
+@{
+    ViewData["Title"] = WebResources.MainNavbarManageUsers;
+}
+
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>@WebResources.MainNavbarManageUsers</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">@WebResources.MainNavBarHomeName</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@WebResources.UserIndexTitle</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <section class="section">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">
+                    @WebResources.UserIndexTitle
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="form-body">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <ul class="list-unstyled mb-0">
+                                <li class="d-inline-block me-2 mb-1">
+                                    <div class="form-check">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" id="filterGetAll" class="form-check-input" @SetChecked(ViewBag.GetAll)>
+                                                @WebResources.UserIndexGetAllText
+                                            </label>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="d-inline-block me-2 mb-1">
+                                    <div class="form-check">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" id="filterGetBlocked" class="form-check-input" @SetChecked(ViewBag.GetBlocked)>
+                                                @WebResources.UserIndexGetBlockedMessage
+                                            </label>
+                                        </div>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 d-flex justify-content-center">
+                        <button id="applyFilters" class="btn btn-primary me-1 mb-1">@WebResources.ApplyFiltersText</button>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <div>
+                            <button id="block_users" class="btn btn-secondary"><i class="bi bi-lock-fill"></i></button>
+                            <button id="unblock_users" class="btn btn-secondary"><i class="bi bi-unlock-fill"></i></button>
+                            <button id="delete_users" class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
+                            <button id="convert_admin" class="btn btn-success"><i class="bi bi-plus-circle-fill"></i> @WebResources.UserIndexGrantAdmin</button>
+                            <button id="remove_admin" class="btn btn-warning"><i class="bi bi-dash-circle-fill"></i> @WebResources.UserIndexRemoveAdmin</button>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-striped" id="users-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>@WebResources.SimpleWordName</th>
+                            <th>@WebResources.SimpleWordRole</th>
+                            <th>@WebResources.UserIndexRegistrationDate</th>
+                            <th>@WebResources.SimpleWordStatus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td><input data-user-id="@item.Id" class="doom_check form-check" type="checkbox" role="checkbox" /></td>
+                                <td>@item.UserName</td>
+                                <td>@item.Role.Name</td>
+                                <td>@item.CreatedAt.ToString("G", CultureInfo.CurrentCulture)</td>
+                                <td>@(item.IsBlocked ? WebResources.SimpleWordBlocked : WebResources.SimpleWordActive)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/admin/extensions/simple-datatables/style.css">
+    <link rel="stylesheet" crossorigin href="~/admin/css/table-datatable.css">
+    <link rel="stylesheet" href="~/admin/extensions/sweetalert2/sweetalert2.min.css" />
+    <link rel="stylesheet" href="~/admin/css/extra-component-sweetalert.css" asp-append-version="true">
+}
+
+@section Scripts {
+    <script src="~/admin/js/pages/form-element-select.js" asp-append-version="true"></script>
+    <script src="~/admin/extensions/simple-datatables/umd/simple-datatables.js"></script>
+    <script src="~/admin/extensions/sweetalert2/sweetalert2.min.js"></script>
+    <partial name="_AdminDataTableScriptsPartial" />
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            const totalCount = @ViewBag.UsersTotalCount;
+            const currentSize = @ViewBag.CurrentSize;
+            const currentPage = @ViewBag.CurrentPage; // Establece la página actual correcta
+            const dataTableInstance = new DataTableInit('users-table', totalCount, currentPage, currentSize);
+
+            document.getElementById('applyFilters').addEventListener('click', function () {
+                const filterParams = {
+                    getAll: document.getElementById('filterGetAll').checked,
+                    getBlocked: document.getElementById('filterGetBlocked').checked
+                };
+                dataTableInstance.applyFilters(filterParams);
+            });
+
+            const currentUserId = '@authService.GetUserId()';
+            document.getElementById('block_users').addEventListener('click', (ev) => {
+                block_unblockCommon('false', ev.target);
+            });
+
+            document.getElementById('unblock_users').addEventListener('click', (ev) => {
+                block_unblockCommon('true', ev.target);
+            });
+
+            document.getElementById('convert_admin').addEventListener('click', (ev) => {
+                grant_removeAdminCommon('@Constants.AdminRoleId', ev.target);
+            });
+
+            document.getElementById('remove_admin').addEventListener('click', (ev) => {
+                grant_removeAdminCommon('@Constants.UserRoleId', ev.target);
+            });
+
+            document.getElementById('delete_users').addEventListener('click', (ev) => {
+                ev.target.disabled = true;
+                const relativeUri = '/admin/manage-users/delete/{id}';
+                const userids = getUserIds();
+                if (userids.length === 0) {
+                    ev.target.disabled = false;
+                    return;
+                }
+                const callback = (obj) => relativeUri.replace('{id}', obj.id);
+                forEachId(userids, callback, 'DELETE').then((res) => { if (res) location.reload() });
+            });
+
+            function grant_removeAdminCommon(roleId, element) {
+                element.disabled = true;
+                const relativeUri = '/admin/manage-users/change-role/{userId}/{roleId}';
+                const userids = getUserIds();
+                if (userids.length === 0) {
+                    element.disabled = false;
+                    return;
+                }
+                const callback = (obj) => relativeUri.replace('{userId}', obj.id).replace('{roleId}', roleId);
+                forEachId(userids, callback, 'PUT').then((res) => { if (res) location.reload() });
+            }
+
+            function block_unblockCommon(status, element) {
+                element.disabled = true;
+                const relativeUri = '/admin/manage-users/change-status/{id}?newStatus=' + status;
+                const userids = getUserIds();
+                if (userids.length === 0) {
+                    element.disabled = false;
+                    return;
+                }
+                const callback = (obj) => relativeUri.replace('{id}', obj.id);
+                forEachId(userids, callback, 'PUT').then((res) => { if (res) location.reload() });
+            }
+
+            function getUserIds() {
+                let userids = Array.from(document.getElementsByClassName('doom_check')).filter(x => x.checked).map(x => { return { id: x.getAttribute('data-user-id') } });
+                if (userids.includes(currentUserId)) {
+                    userids = userids.filter(x => x.id !== currentUserId);
+                    userids.push(currentUserId);
+                }
+                return userids;
+            }
+
+            async function forEachId(userids, callback, method) {
+                const isAllRight = [];
+                for (const obj of userids) {
+                    const res = await sendRequest({ url: callback(obj), method: method });
+                    isAllRight.push(res);
+                }
+                return isAllRight.every(x => x);
+            }
+
+            async function sendRequest({ url, method }) {
+                const response = await fetch(url, { method: method });
+                if (response.redirected) {
+                    location.href = response.url;
+                    return false;
+                } else if (!response.ok) {
+                    const resjson = await response.json();
+                    Swal.fire({
+                        title: '@WebResources.UserIndexWentWrong',
+                        text: `${resjson.message} - @WebResources.SimpleWordCode: ${response.status}`,
+                        icon: 'error',
+                        confirmButtonText: '@WebResources.SimpleWordUnderstood'
+                    }).then(() => location.reload());
+                    return false;
+                }
+                return true;
+            }
+        });
+    </script>
+}
+
+@functions {
+    static string SetChecked(bool value)
+        => value ? "checked" : string.Empty;
+}
