@@ -14,7 +14,7 @@ namespace FormsCreator.Application.Mapping
             CreateMap<TemplateCreateRequestDto<IFormFile>, Template>()
                 .AfterMap((src, target) =>
                 {
-                    target.UsersAllowed = src.Users.Select(x => new TemplateAccess { UserId = x.Id }).ToArray();
+                    target.UsersAllowed = src.Users?.Select(x => new TemplateAccess { UserId = x.Id }).ToArray() ?? [];
                 });
 
             CreateMap<TemplateUpdateRequestDto<IFormFile>, Template>();

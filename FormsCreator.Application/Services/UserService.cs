@@ -65,6 +65,7 @@ namespace FormsCreator.Application.Services
         public async Task<IResult> RegisterAsync(UserRegisterRequestDto req)
         {
             var user = _mapper.Map<UserRegisterRequestDto, User>(req);
+            user.RoleId = Constants.UserRoleId;
             return await _userRepository.CreateAsync(user);
         }
 

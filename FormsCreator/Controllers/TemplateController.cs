@@ -20,9 +20,9 @@ namespace FormsCreator.Controllers
         public async Task<IActionResult> MyTemplatesAsync(CancellationToken token, int page = 1, int size = 6)
         {
             var res = await _templateService.GetByCreatorAsync(GetCurrentUserId(), page, size, token);
-            if (res.IsFailure) return InternalError();
+            if (res.IsFailure) return CustomViewResponse(res);
             var modelRes = await GetTemplatesPagingAsync(page, size, res.Result, GetCurrentUserId(), [], [], null, token);
-            if (modelRes.IsFailure) return InternalError();
+            if (modelRes.IsFailure) return CustomViewResponse(modelRes);
             return View(modelRes.Result);
         }
 
@@ -32,9 +32,9 @@ namespace FormsCreator.Controllers
             string? tags = null, string? topics = null, string? text = null, int page = 1)
         {
             var res = await GetTemplatesAsync(page, 10, null, topics.ToParameterArray(), tags.ToParameterArray(), text, token);
-            if (res.IsFailure) return InternalError(res.Error);
+            if (res.IsFailure) return CustomViewResponse(res);
             var modelRes = await GetTemplatesPagingAsync(page, 10, res.Result, null, topics.ToParameterArray(), tags.ToParameterArray(), text, token);
-            if (modelRes.IsFailure) return InternalError(modelRes.Error);
+            if (modelRes.IsFailure) return CustomViewResponse(modelRes);
             await ConfigureTemplatesViewAsync(topicService, tagService, topics.ToParameterArray(), tags.ToParameterArray(), text, token);
             return View(modelRes.Result);
         }
@@ -59,7 +59,7 @@ namespace FormsCreator.Controllers
             }
             req.CreatorId = GetCurrentUserId();
             var res = await _templateService.CreateAsync(req);
-            if (res.IsFailure) return InternalError(res.Error);
+            if (res.IsFailure) return CustomViewResponse(res);
             return RedirectToAction("MyTemplates");
         }
 
