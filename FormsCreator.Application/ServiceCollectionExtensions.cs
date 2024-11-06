@@ -25,7 +25,9 @@ namespace FormsCreator.Application
                 .AddScoped<ICommentService, CommentService>().AddScoped<IFormService, FormService>()
                 .AddScoped<IRoleService, RoleService>().AddScoped<ITemplateAccessService, TemplateAccessService>()
                 .AddScoped<ITemplateService, TemplateService>().AddScoped<ITopicService, TopicService>()
-                .AddScoped<IUserService, UserService>().AddScoped<ITagService, TagService>().AddSingleton<ICommentNotifier, CommentNotifier>();
+                .AddScoped<IUserService, UserService>().AddScoped<ITagService, TagService>()
+                .AddScoped<ISalesforceService, SalesforceService>().AddSingleton<ICommentNotifier, CommentNotifier>()
+                .AddScoped<IJiraService, JiraService>();
         }
 
         public static IServiceCollection AddJwtBearerAuth(this IServiceCollection services, Action<TokenOptions> options, IWebHostEnvironment env)

@@ -328,7 +328,7 @@
     <value>¡Ups! Algo salió mal</value>
   </data>
   <data name="SimpleWordCode" xml:space="preserve">
-    <value>Código</value>
+    <value>Codigo</value>
   </data>
   <data name="SimpleWordUnderstood" xml:space="preserve">
     <value>Entendido</value>
@@ -467,5 +467,44 @@
   </data>
   <data name="ReviewFormText" xml:space="preserve">
     <value>Revisar formulario</value>
+  </data>
+  <data name="ProfileTitle" xml:space="preserve">
+    <value>Perfil</value>
+  </data>
+  <data name="CreateSalesforceAcc" xml:space="preserve">
+    <value>Crear cuenta de salesforce</value>
+  </data>
+  <data name="IsBlockedText" xml:space="preserve">
+    <value>¿Está bloqueado?</value>
+  </data>
+  <data name="SimpleWordAction" xml:space="preserve">
+    <value>Acción</value>
+  </data>
+  <data name="SeeProfileText" xml:space="preserve">
+    <value>Ver perfil</value>
+  </data>
+  <data name="AccountCreatedText" xml:space="preserve">
+    <value>Cuenta creada</value>
+  </data>
+  <data name="SalesforceAccCreated" xml:space="preserve">
+    <value>La cuenta de salesforce fue creada exitosamente.</value>
+  </data>
+  <data name="SimpleWordHigh" xml:space="preserve">
+    <value>Alto</value>
+  </data>
+  <data name="SimpleWordMedium" xml:space="preserve">
+    <value>Medio</value>
+  </data>
+  <data name="SimpleWordLow" xml:space="preserve">
+    <value>Bajo</value>
+  </data>
+  <data name="SimpleWordPriority" xml:space="preserve">
+    <value>Prioridad</value>
+  </data>
+  <data name="CreateTicketJiraText" xml:space="preserve">
+    <value>Crear un ticket de jira</value>
+  </data>
+  <data name="SimpleWordSummary" xml:space="preserve">
+    <value>Resumen</value>
   </data>
 </root>

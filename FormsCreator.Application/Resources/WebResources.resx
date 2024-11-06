@@ -468,4 +468,43 @@
   <data name="ReviewFormText" xml:space="preserve">
     <value>Review form</value>
   </data>
+  <data name="ProfileTitle" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="CreateSalesforceAcc" xml:space="preserve">
+    <value>Create salesforce account</value>
+  </data>
+  <data name="IsBlockedText" xml:space="preserve">
+    <value>Is blocked?</value>
+  </data>
+  <data name="SimpleWordAction" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="SeeProfileText" xml:space="preserve">
+    <value>See profile</value>
+  </data>
+  <data name="AccountCreatedText" xml:space="preserve">
+    <value>Account created</value>
+  </data>
+  <data name="SalesforceAccCreated" xml:space="preserve">
+    <value>The salesforce account was created successfully.</value>
+  </data>
+  <data name="SimpleWordHigh" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="SimpleWordMedium" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="SimpleWordLow" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="SimpleWordPriority" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="CreateTicketJiraText" xml:space="preserve">
+    <value>Create Jira ticket</value>
+  </data>
+  <data name="SimpleWordSummary" xml:space="preserve">
+    <value>Summary</value>
+  </data>
 </root>

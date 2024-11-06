@@ -130,7 +130,11 @@ namespace FormsCreator.Application.Services
             var manageRes = await ManageUserAsync(email, claims, scheme);
             if (manageRes.IsSuccess) return manageRes;
             var res = await _userRepository.CreateAsync(CreateUser(name, email, provider));
-            if (res.IsFailure) return res;
+            if (res.IsFailure)
+            {
+                await _context.SignOutAsync(scheme);
+                return res;
+            }
             return await ManageUserAsync(email, claims, scheme);
         }
 

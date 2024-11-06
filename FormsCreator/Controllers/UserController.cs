@@ -1,4 +1,5 @@
-﻿using FormsCreator.Application.Attributes;
+﻿using FormsCreator.Application.Abstractions;
+using FormsCreator.Application.Attributes;
 using FormsCreator.Controllers.Base;
 using FormsCreator.Core.DTOs.User;
 using FormsCreator.Core.Interfaces.Services;
@@ -8,13 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FormsCreator.Controllers
 {
-    [Authorize(Roles = "Admin")]
     [Route("admin/manage-users")]
     public class UserController(IUserService userService) : AbsController
     {
         private readonly IUserService _userService = userService;
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "Admin")]
         [ViewLayout("_AdminLayout")]
         public async Task<IActionResult> IndexAsync(CancellationToken token,
             bool getAll = true, bool getBlocked = false, int page = 1, int size = 10)
@@ -26,6 +26,25 @@ namespace FormsCreator.Controllers
             return View(usersRes.Result);
         }
 
+        [HttpGet("~/profile"), Authorize]
+        [ViewLayout("_AdminLayout")]
+        public async Task<IActionResult> ProfileAsync(CancellationToken token)
+        {
+            var userRes = await _userService.FindProfileAsync(GetCurrentUserId(), token);
+            if (userRes.IsFailure) return CustomViewResponse(userRes);
+            return View(userRes.Result);
+        }
+
+        [HttpGet("{id:guid}"), Authorize(Roles = "Admin")]
+        [ViewLayout("_AdminLayout")]
+        public async Task<IActionResult> ProfileAsync(Guid id, CancellationToken token)
+        {
+            if (id == GetCurrentUserId()) return Redirect("/profile");
+            var userRes = await _userService.FindProfileAsync(id, token);
+            if (userRes.IsFailure) return CustomViewResponse(userRes);
+            return View(userRes.Result);
+        }
+
         [HttpGet("~/api/v1/users/search-by-term"), AllowAnonymous]
         public async Task<IActionResult> SearchByTermAsync(string q, CancellationToken token)
         {
@@ -35,7 +54,19 @@ namespace FormsCreator.Controllers
             return Ok(res.Result);
         }
 
-        [HttpPut("change-status/{userId:guid}")]
+        [HttpPost("~/api/v1/users/salesforce-create/{userId:guid}"), Authorize]
+        public async Task<IActionResult> CreateSalesforceAccAsync(Guid userId,
+            [FromServices]ISalesforceService salesforceService)
+        {
+            if (!IsCurrentUserId(userId) && !User.IsInRole("Admin"))
+                return Unauthorized();
+
+            var result = await salesforceService.CreateAccountAndContactAsync(userId);
+            if (result.IsFailure) return CustomResponse(result);
+            return Ok();
+        }
+
+        [HttpPut("change-status/{userId:guid}"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> ChangeStatusAsync(Guid userId, bool newStatus)
         {
             var res = await _userService.ChangeStatusAsync(userId, newStatus);
@@ -43,7 +74,7 @@ namespace FormsCreator.Controllers
             return Ok();
         }
 
-        [HttpPut("change-role/{userId:guid}/{roleId:guid}")]
+        [HttpPut("change-role/{userId:guid}/{roleId:guid}"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> ChangeRoleAsync(Guid userId, Guid roleId)
         {
             var res = await _userService.ChangeRoleAsync(userId, roleId);
@@ -51,7 +82,7 @@ namespace FormsCreator.Controllers
             return Ok();
         }
 
-        [HttpDelete("delete/{userId:guid}")]
+        [HttpDelete("delete/{userId:guid}"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAsync(Guid userId)
         {
             var res = await _userService.DeleteAsync(userId);

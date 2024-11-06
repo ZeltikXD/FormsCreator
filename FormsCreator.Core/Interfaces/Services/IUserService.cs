@@ -19,6 +19,8 @@ namespace FormsCreator.Core.Interfaces.Services
 
         Task<IResult<IEnumerable<UserPublicResponseDto>>> SearchBySimilarityAsync(string text, CancellationToken token);
 
+        Task<IResult<UserPrivateResponseDto>> FindProfileAsync(Guid id, CancellationToken token);
+
         Task<IResult> ChangeStatusAsync(Guid id, bool isBlocked);
 
         Task<IResult> ChangeRoleAsync(Guid id, Guid roleId);

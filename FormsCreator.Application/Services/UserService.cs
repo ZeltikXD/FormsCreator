@@ -62,6 +62,14 @@ namespace FormsCreator.Application.Services
             return MapToResponse(usersRes);
         }
 
+        public async Task<IResult<UserPrivateResponseDto>> FindProfileAsync(Guid id, CancellationToken token)
+        {
+            var userRes = await _userRepository.FindByIdAsync(id, token);
+            if (userRes.IsFailure) return userRes.FailureTo<UserPrivateResponseDto>();
+            var user = _mapper.Map<User, UserPrivateResponseDto>(userRes.Result);
+            return Result.Success(user);
+        }
+
         public async Task<IResult> RegisterAsync(UserRegisterRequestDto req)
         {
             var user = _mapper.Map<UserRegisterRequestDto, User>(req);

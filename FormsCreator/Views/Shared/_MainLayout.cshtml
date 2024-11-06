@@ -90,6 +90,7 @@
         @RenderBody()
     </main>
     @await RenderSectionAsync("ExtraElements", false)
+    <partial name="_JiraFormPartial" />
     <footer class="site-footer">
         <div class="container pt-5">
             <div class="row align-items-center">
@@ -106,8 +107,12 @@
                         </li>
 
                         <li class="site-footer-link-item">
-                            <a href="#" class="site-footer-link">@WebResources.MainNavbarTemplatesText</a>
+                            <a asp-controller="Template" asp-action="Templates" class="site-footer-link">@WebResources.MainNavbarTemplatesText</a>
                         </li>
+
+                        @* <li class="site-footer-link-item">
+                            <a data-bs-toggle="modal" data-bs-target="#jiraForm" href="javascript:void(0)" class="site-footer-link">@WebResources.CreateTicketJiraText</a>
+                        </li> *@
                     </ul>
                 </div>
 
@@ -126,6 +131,7 @@
     <script src="~/main/js/owl.carousel.min.js"></script>
     <script src="~/main/js/change-theme.js"></script>
     <script src="~/main/js/custom.js" asp-append-version="true"></script>
+    <script src="~/lib/jira-request.js" asp-append-version="true"></script>
     <script type="text/javascript">
         (function () {
             const stickyOffset = 170;

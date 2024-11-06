@@ -41,5 +41,18 @@ namespace FormsCreator.Application.Utils
             QuestionType.Checkbox_Grid => "checkbox",
             _ => string.Empty
         };
+
+        public static SelectList PriorityList => new(new PriorityItem[] {
+            new() { Name = WebResources.ResourceManager.GetString("SimpleWord"+Priority.High.ToString())!, Priority = Priority.High },
+            new() { Name = WebResources.ResourceManager.GetString("SimpleWord"+Priority.Medium.ToString())!, Priority = Priority.Medium },
+            new() { Name = WebResources.ResourceManager.GetString("SimpleWord"+Priority.Low.ToString())!, Priority = Priority.Low },
+        }, "Priority", "Name");
+
+        class PriorityItem
+        {
+            public string Name { get; set; } = string.Empty;
+
+            public Priority Priority { get; set; }
+        }
     }
 }

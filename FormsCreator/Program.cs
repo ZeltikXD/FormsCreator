@@ -34,6 +34,22 @@ namespace FormsCreator
                 opts.ClientId = builder.Configuration["OAuth:Google:ClientId"]!;
                 opts.ClientSecret = builder.Configuration["OAuth:Google:ClientSecret"]!;
             });
+            builder.Services.AddSalesforceManager(opts
+                => opts.SetClientSecret(builder.Configuration["Salesforce:ClientSecret"])
+                .SetClientId(builder.Configuration["Salesforce:ClientId"])
+                .SetUserName(builder.Configuration["Salesforce:Username"])
+                .SetPassword(builder.Configuration["Salesforce:Password"])
+                .SetLoginUrl(builder.Configuration["Salesforce:LoginUrl"])
+                .SetRestAccountUrl(builder.Configuration["Salesforce:RestAccountUrl"])
+                .SetRestContactUrl(builder.Configuration["Salesforce:RestContactUrl"])
+                .SetRestQueryUrl(builder.Configuration["Salesforce:RestQueryUrl"]));
+            builder.Services.AddJiraManager(opts =>
+            {
+                opts.ProjectName = builder.Configuration["Atlassian:ProjectName"]!;
+                opts.EmailAccount = builder.Configuration["Atlassian:EmailAccount"]!;
+                opts.ApiUrl = builder.Configuration["Atlassian:ApiUrl"]!;
+                opts.ApiToken = builder.Configuration["Atlassian:ApiToken"]!;
+            });
             builder.Services.AddEmailSender(o => { });
 
             return builder.Build();

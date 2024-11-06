@@ -8,10 +8,19 @@
                 <span>@WebResources.MainNavBarHomeName</span>
             </a>
         </li>
+        @if (authService.HasRole("Admin"))
+        {
         <li class="sidebar-item">
-            <a asp-controller="User" asp-action="Index" class='sidebar-link'>
+                <a asp-controller="User" asp-action="Index" class='sidebar-link'>
                 <i class="bi bi-people-fill"></i>
                 <span>@WebResources.MainNavbarManageUsers</span>
+            </a>
+        </li>
+        }
+        <li class="sidebar-item">
+            <a asp-controller="User" asp-action="Profile" class="sidebar-link">
+                <i class="bi bi-person-fill"></i>
+                <span>@WebResources.ProfileTitle</span>
             </a>
         </li>
         <li class="sidebar-item has-sub">

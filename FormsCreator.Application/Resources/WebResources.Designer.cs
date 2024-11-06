@@ -61,6 +61,15 @@ namespace FormsCreator.Application.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Account created.
+        /// </summary>
+        public static string AccountCreatedText {
+            get {
+                return ResourceManager.GetString("AccountCreatedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Add new tag.
         /// </summary>
         public static string AddNewTag {
@@ -228,6 +237,24 @@ namespace FormsCreator.Application.Resources {
         public static string ChooseAnything {
             get {
                 return ResourceManager.GetString("ChooseAnything", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Create salesforce account.
+        /// </summary>
+        public static string CreateSalesforceAcc {
+            get {
+                return ResourceManager.GetString("CreateSalesforceAcc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Create Jira ticket.
+        /// </summary>
+        public static string CreateTicketJiraText {
+            get {
+                return ResourceManager.GetString("CreateTicketJiraText", resourceCulture);
             }
         }
         
@@ -421,6 +448,15 @@ namespace FormsCreator.Application.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Is blocked?.
+        /// </summary>
+        public static string IsBlockedText {
+            get {
+                return ResourceManager.GetString("IsBlockedText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Is public?.
         /// </summary>
         public static string IsPublic {
@@ -565,6 +601,15 @@ namespace FormsCreator.Application.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Profile.
+        /// </summary>
+        public static string ProfileTitle {
+            get {
+                return ResourceManager.GetString("ProfileTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Remove permission.
         /// </summary>
         public static string RemovePermission {
@@ -583,11 +628,38 @@ namespace FormsCreator.Application.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a The salesforce account was created successfully..
+        /// </summary>
+        public static string SalesforceAccCreated {
+            get {
+                return ResourceManager.GetString("SalesforceAccCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a See form.
         /// </summary>
         public static string SeeFormText {
             get {
                 return ResourceManager.GetString("SeeFormText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a See profile.
+        /// </summary>
+        public static string SeeProfileText {
+            get {
+                return ResourceManager.GetString("SeeProfileText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Action.
+        /// </summary>
+        public static string SimpleWordAction {
+            get {
+                return ResourceManager.GetString("SimpleWordAction", resourceCulture);
             }
         }
         
@@ -682,6 +754,33 @@ namespace FormsCreator.Application.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a High.
+        /// </summary>
+        public static string SimpleWordHigh {
+            get {
+                return ResourceManager.GetString("SimpleWordHigh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Low.
+        /// </summary>
+        public static string SimpleWordLow {
+            get {
+                return ResourceManager.GetString("SimpleWordLow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Medium.
+        /// </summary>
+        public static string SimpleWordMedium {
+            get {
+                return ResourceManager.GetString("SimpleWordMedium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Menu.
         /// </summary>
         public static string SimpleWordMenu {
@@ -727,6 +826,15 @@ namespace FormsCreator.Application.Resources {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Priority.
+        /// </summary>
+        public static string SimpleWordPriority {
+            get {
+                return ResourceManager.GetString("SimpleWordPriority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Role.
         /// </summary>
         public static string SimpleWordRole {
@@ -759,6 +867,15 @@ namespace FormsCreator.Application.Resources {
         public static string SimpleWordSubmit {
             get {
                 return ResourceManager.GetString("SimpleWordSubmit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Summary.
+        /// </summary>
+        public static string SimpleWordSummary {
+            get {
+                return ResourceManager.GetString("SimpleWordSummary", resourceCulture);
             }
         }
         

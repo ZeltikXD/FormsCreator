@@ -78,6 +78,7 @@
                             <th>@WebResources.SimpleWordRole</th>
                             <th>@WebResources.UserIndexRegistrationDate</th>
                             <th>@WebResources.SimpleWordStatus</th>
+                            <th>@WebResources.SimpleWordAction</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,6 +90,9 @@
                                 <td>@item.Role.Name</td>
                                 <td>@item.CreatedAt.ToString("G", CultureInfo.CurrentCulture)</td>
                                 <td>@(item.IsBlocked ? WebResources.SimpleWordBlocked : WebResources.SimpleWordActive)</td>
+                                <td>
+                                    <span class="badge bg-success"><a style="color: #FFF" asp-action="Profile" asp-route-id="@item.Id">@WebResources.SeeProfileText</a></span>
+                                </td>
                             </tr>
                         }
                     </tbody>

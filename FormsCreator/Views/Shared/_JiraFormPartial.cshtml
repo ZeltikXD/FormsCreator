@@ -1,0 +1,33 @@
+﻿@using FormsCreator.Application.Utils
+<div class="modal fade" id="jiraForm" tabindex="-1" aria-labelledby="jiraFormLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="jiraFormLabel">@WebResources.CreateTicketJiraText</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="dialog" action="#">
+                    <div class="mb-3">
+                        <label for="jira-summary" class="col-form-label">@WebResources.SimpleWordSummary</label>
+                        <textarea class="form-control" id="jira-summary"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="jira-priority" class="form-label">@WebResources.SimpleWordPriority</label>
+                        <select id="jira-priority" class="form-select" data-placeholder="@WebResources.ChooseAnything" asp-items="ViewUtils.PriorityList"></select>
+                    </div>
+                    @{ string templateTitle = string.Empty; }
+                    @if (ViewBag.Template is TemplateResponseDto temp)
+                    {
+                        templateTitle = temp.Title;
+                    }
+                    <input type="hidden" id="jira-template-title" value="@templateTitle" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="submit-jira-form" class="btn btn-primary">@WebResources.SimpleWordSubmit</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@WebResources.SimpleWordClose</button>
+            </div>
+        </div>
+    </div>
+</div>

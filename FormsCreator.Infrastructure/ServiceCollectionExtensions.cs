@@ -1,4 +1,5 @@
-﻿using EntityFramework.Exceptions.PostgreSQL;
+﻿using Atlassian.Jira;
+using EntityFramework.Exceptions.PostgreSQL;
 using FormsCreator.Application.Abstractions;
 using FormsCreator.Core.Interfaces.Repositories;
 using FormsCreator.Infrastructure.Data;
@@ -6,6 +7,7 @@ using FormsCreator.Infrastructure.Options;
 using FormsCreator.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System.Diagnostics.CodeAnalysis;
 
 namespace FormsCreator.Infrastructure
@@ -53,6 +55,25 @@ namespace FormsCreator.Infrastructure
             services.AddOptions<ImageManagerOptions>().Configure(opts);
             services.AddHttpClient<IImageManager, ImageManager>();
             return services;
+        }
+
+        public static IServiceCollection AddSalesforceManager(this IServiceCollection services, Action<SalesforceOptions> opts)
+        {
+            services.AddOptions<SalesforceOptions>().Configure(opts);
+            services.AddHttpClient<ISalesforceManager, SalesforceManager>();
+            return services;
+        }
+
+        public static IServiceCollection AddJiraManager(this IServiceCollection services, Action<AtlassianJiraOptions> opts)
+        {
+            services.AddOptions<AtlassianJiraOptions>().Configure(opts);
+            return services.AddSingleton<IAtlassianJiraManager, AtlassianJiraManager>(ctr =>
+            {
+                var options = ctr.GetRequiredService<IOptions<AtlassianJiraOptions>>();
+                var jira = Jira.CreateRestClient(options.Value.ApiUrl, options.Value.EmailAccount, options.Value.ApiToken,
+                    new() { EnableRequestTrace = true, EnableUserPrivacyMode = true });
+                return new AtlassianJiraManager(jira, options);
+            });
         }
     }
 }

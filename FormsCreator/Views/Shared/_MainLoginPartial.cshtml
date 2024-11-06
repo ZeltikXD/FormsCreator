@@ -9,6 +9,7 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="userDropdown">
                 <li><a class="dropdown-item" asp-controller="Form" asp-action="MyForms">@WebResources.MainNavbarMyForms</a></li>
+                <li><a class="dropdown-item" asp-controller="User" asp-action="Profile">@WebResources.ProfileTitle</a></li>
                 @if (authService.HasRole("Admin"))
                 {
                 <li><a class="dropdown-item" asp-controller="User" asp-action="Index">@WebResources.MainNavbarManageUsers</a></li>

@@ -1,6 +1,7 @@
 ﻿using FormsCreator.Core.Enums;
 using Microsoft.AspNetCore.Http;
 using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace FormsCreator.Application.Utils
 {
@@ -13,9 +14,17 @@ namespace FormsCreator.Application.Utils
             SameSite = SameSiteMode.Strict,
             Secure = true,
             HttpOnly = true,
-            IsEssential = true,
-            Expires = DateTimeOffset.UtcNow.AddDays(399),
+            IsEssential = true
         };
+
+        private static CookieOptions CookieOptions
+        {
+            get
+            {
+                _cookieOptions.Expires = DateTimeOffset.UtcNow.AddDays(399);
+                return _cookieOptions;
+            }
+        }
 
         public static void SetLanguage(SupportedLang lang)
         {
@@ -26,7 +35,7 @@ namespace FormsCreator.Application.Utils
         public static void SetUserLanguage(this HttpResponse res, SupportedLang lang)
         {
             SetLanguage(lang);
-            res.Cookies.Append("saved-lang", lang.ToString(), _cookieOptions);
+            res.Cookies.Append("saved-lang", lang.ToString(), CookieOptions);
         }
 
         public static SupportedLang GetUserLanguage(this HttpRequest req)

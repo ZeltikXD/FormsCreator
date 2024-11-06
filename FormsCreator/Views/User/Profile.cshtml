@@ -1,0 +1,108 @@
+﻿@model UserPrivateResponseDto
+@{
+    ViewData["Title"] = WebResources.ProfileTitle;
+}
+
+<div class="page-heading">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>@WebResources.ProfileTitle</h3>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">@WebResources.MainNavBarHomeName</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@WebResources.ProfileTitle</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <section class="section">
+        <div class="row">
+            <div class="col-12 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center align-items-center flex-column">
+                            <div class="avatar avatar-2xl">
+                                <img src="https://cdn-icons-png.freepik.com/512/6813/6813762.png" alt="Avatar">
+                            </div>
+
+                            <h3 class="mt-3">@Model.UserName</h3>
+                            <p class="text-small">@Model.Role.Name</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="#" method="dialog">
+                            <div class="form-group">
+                                <label asp-for="UserName" class="form-label">@WebResources.AuthRegisterUserName</label>
+                                <input type="text" asp-for="UserName" class="form-control" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Email" class="form-label">@WebResources.AuthRegisterEmail</label>
+                                <input type="email" asp-for="Email" class="form-control" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Role.Name" class="form-label">@WebResources.SimpleWordRole</label>
+                                <input type="text" asp-for="Role.Name" class="form-control" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="IsBlocked" class="form-check-label">
+                                    @WebResources.IsBlockedText
+                                    <input asp-for="IsBlocked" type="checkbox" class="form-check-input" disabled />
+                                </label>
+                            </div>
+                        </form>
+                        <div class="form-group">
+                            <button onclick="createSalesforceAccount(this)" type="button" class="btn btn-primary">@WebResources.CreateSalesforceAcc</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section Styles {
+    <link rel="stylesheet" href="~/admin/extensions/sweetalert2/sweetalert2.min.css" />
+    <link rel="stylesheet" href="~/admin/css/extra-component-sweetalert.css" asp-append-version="true">
+}
+
+@section Scripts {
+    <script src="~/admin/extensions/sweetalert2/sweetalert2.min.js"></script>
+    <script type="text/javascript">
+        function createSalesforceAccount(element) {
+            element.disabled = true;
+            const url = '@Url.Action("CreateSalesforceAcc", new { userId = Model.Id })';
+            sendRequest({ url: url, method: 'POST' }).then(() => {
+                element.disabled = false;
+            });
+
+            async function sendRequest({ url, method }) {
+                const response = await fetch(url, { method: method });
+                if (response.redirected) {
+                    location.href = response.url;
+                } else if (!response.ok) {
+                    const resjson = await response.json();
+                    Swal.fire({
+                        title: '@WebResources.UserIndexWentWrong',
+                        text: `${resjson.message} - @WebResources.SimpleWordCode: ${response.status}`,
+                        icon: 'error',
+                        confirmButtonText: '@WebResources.SimpleWordUnderstood'
+                    });
+                } else if (response.ok) {
+                    Swal.fire({
+                        title: '@WebResources.AccountCreatedText',
+                        text: '@WebResources.SalesforceAccCreated',
+                        icon: 'success',
+                        confirmButtonText: '@WebResources.SimpleWordUnderstood'
+                    });
+                }
+            }
+        }
+    </script>
+}
