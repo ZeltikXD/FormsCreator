@@ -144,7 +144,7 @@ namespace FormsCreator.Infrastructure.Repositories
             new KeyValuePair<string, string>("username", _options.UserName),
             new KeyValuePair<string, string>("password", _options.Password)]);
 
-            var response = await _httpClient.PostAsync(_options.LoginUrl, content);
+            using var response = await _httpClient.PostAsync(_options.LoginUrl, content);
             await EnsureSuccessStatusCodeAsync(response);
 
             var tokenResult = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();

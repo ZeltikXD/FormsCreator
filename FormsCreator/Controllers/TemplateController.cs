@@ -81,9 +81,7 @@ namespace FormsCreator.Controllers
             if (!ModelState.IsValid)
             {
                 await CommonViewConfigureAsync(topicService, tagService, req.TopicId, req.Tags.Select(x => x.Id).ToArray(), token);
-                var templRes = await _templateService.FindAsUpdateAsync(req.Id, token);
-                if (templRes.IsFailure) return CustomViewResponse(templRes);
-                return View("Edit", templRes.Result);
+                return View("Edit", req);
             }
             var res = await _templateService.UpdateAsync(req);
             if (res.IsFailure) return CustomViewResponse(res);
